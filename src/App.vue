@@ -1,36 +1,35 @@
 <template>
     <div id="app">
-        {{ info }}
+        <ul>
+            <li v-for="user in users" v-bind:key="user.id">
+                {{ user.id }} {{ user.name }} - {{ user.email }}
+            </li>
+        </ul>
+        <CreateUserForm />
     </div>
 </template>
 
 <script>
-import axios from "axios";
+    import axios from "axios";
+    import CreateUserForm from "./CreateUserForm";
 
-export default {
-    name: 'app',
-    components: {},
-    data: function() {
-        return {
-            info: null
-        }
-    },
-    mounted() {
-        axios
-            .get("/api/users")
-            .then(response => (this.info = response))
+    export default {
+        name: 'app',
+        components: {
+            CreateUserForm
+        },
+        data() {
+            return {
+                users: []
+            }
+        },
+        mounted() {
+            axios
+                .get("/api/users")
+                .then(response => (this.users = response.data))
+        },
     }
-}
-
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
